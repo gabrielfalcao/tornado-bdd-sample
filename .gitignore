@@ -1,0 +1,6 @@
+*.pyc
+.coverage
+build/
+dist/
+.DS_Store
+index.yaml
