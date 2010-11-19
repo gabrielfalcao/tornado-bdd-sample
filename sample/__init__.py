@@ -1,4 +1,4 @@
-# #!/usr/bin/env python
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # <tornado bdd sample>
 # Copyright (C) <2010>  Gabriel Falcão <gabriel@nacaolivre.org>
