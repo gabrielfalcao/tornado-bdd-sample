@@ -5,5 +5,5 @@ Feature: Hello World to greet
   So that I can see it is starting
 
   Scenario: Basic Hello
-    Given I access the JSON "/"
+    Given I access the URL "/"
     Then I see the response is "Hello, world"

@@ -26,11 +26,11 @@
 from sure import that
 from lettuce import step, world
 
-@step(u'Given I access the JSON "(.*)"')
-def given_i_access_the_json_group1(step, path):
+@step(u'Given I access the URL "(.*)"')
+def given_i_access_the_url_group1(step, path):
     world.response = world.browser.get('http://localhost:8888%s' % path)
 
 @step(u'Then I see the response is "(.*)"')
 def then_i_see_the_response_is_group1(step, the_expected):
-    the_html = world.browser.get_page_source()
+    the_html = world.browser.get_page_source()[30:-20]
     assert that(the_html).contains(the_expected)

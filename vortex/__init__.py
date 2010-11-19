@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# <tornado bdd sample>
+# <vortex - tornado utilities>
 # Copyright (C) <2010>  Gabriel Falcão <gabriel@nacaolivre.org>
 #
 # Permission is hereby granted, free of charge, to any person
@@ -23,40 +23,20 @@
 # WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
+import tornado.web
 
-import tornado.httpserver
-import tornado.ioloop
+routes = []
 
-from vortex import Controller, routes
+class ControllerMeta(type):
+    def __new__(cls, name, bases, attrs):
+        # Allocating memory for class
+        return type.__new__(cls, name, bases, attrs)
 
-class MainHandler(Controller):
-    route = ur"/"
-    def get(self):
-        self.set_header("Content-Type", "text/plain")
-        self.write("Hello, world")
+    def __init__(cls, name, bases, attrs):
+        url = attrs.get('route')
+        if url:
+            routes.append((url, cls))
+        super(ControllerMeta, cls).__init__(name, bases, attrs)
 
-class NumeralHandler(Controller):
-    route = ur"/routing/numeral/(\d+)"
-    def get(self, num):
-        self.set_header("Content-Type", "text/plain")
-        self.write('number: ' + num)
-
-class SlugHandler(Controller):
-    route = ur"/routing/slug/(\w[\w-]*)"
-    def get(self, slug):
-        self.set_header("Content-Type", "text/plain")
-        self.write('slug: ' + slug)
-
-class AnythingHandler(Controller):
-    route = ur"/routing/anything/(.*)"
-    def get(self, anything):
-        self.set_header("Content-Type", "text/plain")
-        self.write(anything)
-
-application = tornado.web.Application(routes)
-
-if __name__ == "__main__":
-    print "Tornado listening at localhost:8888"
-    http_server = tornado.httpserver.HTTPServer(application)
-    http_server.listen(8888)
-    tornado.ioloop.IOLoop.instance().start()
+class Controller(tornado.web.RequestHandler):
+    __metaclass__ = ControllerMeta
