@@ -1,0 +1,30 @@
+#!/bin/bash
+
+case "$2" in
+    8000|8001|8002|8003)
+
+        case "$1" in
+            start)
+                /usr/bin/env python `pwd`/sample/start.py --port=$2 --daemon --pidfile-directory=/var/run/ --working-directory=/srv/apps/tornado-app/
+                ;;
+            stop)
+                ps aux | egrep 'start[.]py' | egrep $2 | awk '{ print $2 }' | xargs kill -9;
+                ;;
+            restart)
+                $0 stop $2
+                $0 start $2
+                ;;
+            *)
+                N=`pwd`/$NAME
+                echo "Usage: $N {start|stop|restart} {8000|8001|8002|8003}" >&2
+                exit 1
+                ;;
+        esac
+        ;;
+
+    *)
+        N=`pwd`/$NAME
+        echo "Usage: $N {start|stop|restart} {8000|8001|8002|8003}" >&2
+        exit 1
+        ;;
+esac

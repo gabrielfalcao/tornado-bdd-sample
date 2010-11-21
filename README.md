@@ -27,15 +27,15 @@ just go to the directory and run the command:
 
 just go to the directory and run the command:
 
-    python sample/server.py
+    python sample/start.py
 
 ## run as daemon
 
-    python sample/server.py --daemon
+    python sample/start.py --daemon
 
 ## run in different ports (specially for [deployment in production](http://www.tornadoweb.org/documentation#running-tornado-in-production))
 
-    python sample/server.py --port=8000
+    python sample/start.py --port=8000
 
 ### more on daemon mode
 
@@ -44,13 +44,13 @@ will default to the application path
 
 #### setting the working directory
 
-    python sample/server.py --daemon --working-directory=/path/to/working/dir/
+    python sample/start.py --daemon --working-directory=/path/to/working/dir/
 
 
 
 #### setting the pidfile directory
 
-    python sample/server.py --daemon --pidfile-directory=/var/run/ --port=8899
+    python sample/start.py --daemon --pidfile-directory=/var/run/ --port=8899
 
 this will make the server run on `/var/run/tornado-8899.lock`
 
@@ -58,10 +58,10 @@ this will make the server run on `/var/run/tornado-8899.lock`
 
 this will run your application as daemon in ports 8000 to 8003 working on `/srv/apps/tornado-app`:
 
-    python sample/server.py --port=8000 --daemon --pidfile-directory=/var/run/ --working-directory=/srv/apps/tornado-app
-    python sample/server.py --port=8001 --daemon --pidfile-directory=/var/run/ --working-directory=/srv/apps/tornado-app
-    python sample/server.py --port=8002 --daemon --pidfile-directory=/var/run/ --working-directory=/srv/apps/tornado-app
-    python sample/server.py --port=8003 --daemon --pidfile-directory=/var/run/ --working-directory=/srv/apps/tornado-app
+    python sample/start.py --port=8000 --daemon --pidfile-directory=/var/run/ --working-directory=/srv/apps/tornado-app
+    python sample/start.py --port=8001 --daemon --pidfile-directory=/var/run/ --working-directory=/srv/apps/tornado-app
+    python sample/start.py --port=8002 --daemon --pidfile-directory=/var/run/ --working-directory=/srv/apps/tornado-app
+    python sample/start.py --port=8003 --daemon --pidfile-directory=/var/run/ --working-directory=/srv/apps/tornado-app
 
 and the pidfiles will be located at:
 
@@ -69,6 +69,24 @@ and the pidfiles will be located at:
 `/var/run/tornado-8001.lock`
 `/var/run/tornado-8002.lock`
 `/var/run/tornado-8003.lock`
+
+# in production
+
+this app was made to run on [Amazon EC2](http://aws.amazon.com/ec2/) with [monit](http://mmonit.com/monit/) on it
+
+you can set your monit to run the following script located at this project's root folder:
+
+    ./server start 8000
+    ./server start 8001
+    ./server start 8002
+    ./server start 8003
+
+and stop them with
+
+    ./server stop 8000
+    ./server stop 8001
+    ./server stop 8002
+    ./server stop 8003
 
 # license
 
