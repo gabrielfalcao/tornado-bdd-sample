@@ -2,11 +2,23 @@
 # -*- coding: utf-8 -*-
 from __future__ import with_statement
 
+import os
+import tempfile
 from glob import glob
-from fabric.api import local
+from fabric.api import local, env, put, run, cd
 
+env.hosts = ['ec2-184-72-36-115.us-west-1.compute.amazonaws.com']
+env.key_filename = os.path.expanduser('~/.ssh/gabrielfalcao.pem')
+env.user = 'ubuntu'
 
 test_path = lambda kind: " ".join(glob('*/tests/%s' % kind))
+
+def tarball():
+    tardir = tempfile.gettempdir()
+    local('rm -rf app.tar.bz2')
+    tarpath = os.path.join(tardir, 'app.tar.bz2')
+    local('tar cjf %s .' % tarpath)
+    return tarpath
 
 def test():
     unit()
@@ -21,3 +33,12 @@ def functional():
 
 def acceptance():
     local('lettuce', capture=False)
+
+def deploy():
+    tarpath = tarball()
+    run('rm -rf tornado-bdd-sample')
+    run('mkdir tornado-bdd-sample')
+    put(tarpath, 'tornado-bdd-sample/app.tar.bz2')
+    with cd('~/tornado-bdd-sample'):
+        run('tar xjf app.tar.bz2')
+        run('rm -f app.tar.bz2')

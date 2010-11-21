@@ -23,6 +23,40 @@
 # WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
-from sample.app import application
 
-__all__ = ['application']
+import tornado.httpserver
+import tornado.ioloop
+
+from vortex import Controller, routes
+
+class MainHandler(Controller):
+    route = ur"/"
+    def get(self):
+        self.set_header("Content-Type", "text/plain")
+        self.write("Hello, world")
+
+class HealthCheckHandler(Controller):
+    route = ur"/_health-check"
+    def get(self):
+        self.set_header("Content-Type", "text/plain")
+        self.write("OK")
+
+class NumeralHandler(Controller):
+    route = ur"/routing/numeral/(\d+)"
+    def get(self, num):
+        self.set_header("Content-Type", "text/plain")
+        self.write('number: ' + num)
+
+class SlugHandler(Controller):
+    route = ur"/routing/slug/(\w[\w-]*)"
+    def get(self, slug):
+        self.set_header("Content-Type", "text/plain")
+        self.write('slug: ' + slug)
+
+class AnythingHandler(Controller):
+    route = ur"/routing/anything/(.*)"
+    def get(self, anything):
+        self.set_header("Content-Type", "text/plain")
+        self.write(anything)
+
+application = tornado.web.Application(routes)

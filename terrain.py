@@ -28,7 +28,7 @@ import tornado.httpserver
 
 from threading import Thread
 from lettuce import before, after, world
-from sample import application
+from sample.app import application
 from selenium import get_driver, FIREFOX
 
 class Server(Thread):

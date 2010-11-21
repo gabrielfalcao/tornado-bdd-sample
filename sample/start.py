@@ -23,6 +23,26 @@
 # WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
+import sys
+from optparse import OptionParser
+from os.path import dirname, abspath, join
+sys.path.append(join(abspath(dirname(__file__)), '..'))
+
+import tornado.httpserver
+import tornado.ioloop
 from sample.app import application
 
-__all__ = ['application']
+if __name__ == "__main__":
+    parser = OptionParser()
+    parser.add_option("-p", "--port", dest="port",
+                  help="the port to run server on", default='8000')
+
+    (options, args) = parser.parse_args()
+
+
+    port = int(options.port)
+    print "Tornado listening at localhost:%d" % port
+
+    http_server = tornado.httpserver.HTTPServer(application)
+    http_server.listen(port)
+    tornado.ioloop.IOLoop.instance().start()
