@@ -23,38 +23,25 @@
 # WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
-import tornado.ioloop
-import tornado.httpserver
 
-from threading import Thread
-from lettuce import before, after, world
-from sample import application
-from selenium import get_driver, FIREFOX
+from sure import that
+from vortex import Controller, routes
 
-class Server(Thread):
-    def __init__(self, http):
-        self.http = http
-        Thread.__init__(self)
+def test_controller_register_route():
+    "controller should register route"
 
-    def run(self):
-        self.http.listen(8888)
-        tornado.ioloop.IOLoop.instance().start()
+    assert that(routes).len_is(0)
 
-@before.all
-def run_server():
-    world._server_main = tornado.httpserver.HTTPServer(application)
-    server = Server(world._server_main)
-    server.start()
+    class MyController(Controller):
+        route = '/'
 
-@before.all
-def setup_browser():
-    world.browser = get_driver(FIREFOX)
+    class OtherController(Controller):
+        route = '/other/'
 
-@after.all
-def kill_server(total):
-    world._server_main.stop()
-    tornado.ioloop.IOLoop.instance().stop()
+    assert that(routes).len_is(2)
+    assert that(routes).equals([("/", MyController), ("/other/", OtherController)])
 
-@after.all
-def teardown_browser(total):
-    world.browser.quit()
+    while routes:
+        routes.pop()
+
+

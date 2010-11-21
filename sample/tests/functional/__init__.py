@@ -23,38 +23,3 @@
 # WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
-import tornado.ioloop
-import tornado.httpserver
-
-from threading import Thread
-from lettuce import before, after, world
-from sample import application
-from selenium import get_driver, FIREFOX
-
-class Server(Thread):
-    def __init__(self, http):
-        self.http = http
-        Thread.__init__(self)
-
-    def run(self):
-        self.http.listen(8888)
-        tornado.ioloop.IOLoop.instance().start()
-
-@before.all
-def run_server():
-    world._server_main = tornado.httpserver.HTTPServer(application)
-    server = Server(world._server_main)
-    server.start()
-
-@before.all
-def setup_browser():
-    world.browser = get_driver(FIREFOX)
-
-@after.all
-def kill_server(total):
-    world._server_main.stop()
-    tornado.ioloop.IOLoop.instance().stop()
-
-@after.all
-def teardown_browser(total):
-    world.browser.quit()

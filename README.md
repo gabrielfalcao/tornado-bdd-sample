@@ -1,27 +1,26 @@
-# lettuce + sure + tornado + webdriver example
+# lettuce + sure + selenium + tornado
 
 # What
 
-a simple web application written with outside-in BDD technique through Lettuce + Sure + WebDriver firefox
+a simple web application written with outside-in BDD technique through Lettuce + Sure + Selenium 2 + firefox
 
 # requirements
 
-Firefox with [the jssh](http://wiki.openqa.org/display/WTR/FireWatir+Installation#FireWatirInstallation-2%29InstalltheJSSHFirefoxExtension) extension
-
+* [selenium 2](http://pypi.python.org/pypi/selenium/) which provides firefox "native" support
 * [sure](http://github.com/gabrielfalcao/sure)
-    sudo pip install sure
-
-* [sure](http://github.com/gabrielfalcao/lettuce)
-    sudo pip install sure
-
+* [lettuce](http://github.com/gabrielfalcao/lettuce)
 * [tornado](http://tornadoweb.org/)
-    sudo pip install tornado
+* [fabric](http://fabfile.org/)
+
+## install them all in a single shot!
+
+    sudo pip install -r requirements.txt
 
 # running the tests
 
 just go to the directory and run the command:
 
-    lettuce
+    fab test
 
 # running the server
 

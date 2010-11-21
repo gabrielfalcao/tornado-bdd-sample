@@ -1,0 +1,5 @@
+selenium>=2.0a5
+sure>=0.1.8
+lettuce>=0.1.16
+tornado>=1.1
+fabric>=0.9.3
