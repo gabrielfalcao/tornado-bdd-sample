@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html dir="ltr" xml:lang="pt-br" lang="pt-br" xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Tornado BDD Sample</title>
+	<meta name="keywords" content="tornado, python, scallable" />
+	<meta name="description" content="a simple example of how to" />
+	<link rel="copyright" href="http://gabrielfalcao.com" />
+    </head>
+    <body>
+	<h1>404 - not found</h1>
+	<h2>the url <span id="url-404"></span><noscript>you requested</noscript> does not exist</h2>
+	<script type="text/javascript">
+	    window.onload = function () {
+	        var spanURL = document.getElementById("url-404");
+	        spanURL.innerHTML = '"' + location.href + '"';
+	    }
+	</script>
+    </body>
+</html>

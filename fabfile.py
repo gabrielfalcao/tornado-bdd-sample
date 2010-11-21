@@ -5,7 +5,7 @@ from __future__ import with_statement
 import os
 import tempfile
 from glob import glob
-from fabric.api import local, env, put, run, cd
+from fabric.api import local, env, put, run, cd, sudo
 
 env.hosts = ['ec2-184-72-36-115.us-west-1.compute.amazonaws.com']
 env.key_filename = os.path.expanduser('~/.ssh/gabrielfalcao.pem')
@@ -42,3 +42,9 @@ def deploy():
     with cd('~/tornado-bdd-sample'):
         run('tar xjf app.tar.bz2')
         run('rm -f app.tar.bz2')
+        for port in range(8000, 8004):
+            sudo('./deploy/server stop %d' % port)
+
+    sudo('/etc/init.d/monit restart')
+    sudo('/etc/init.d/nginx restart')
+
