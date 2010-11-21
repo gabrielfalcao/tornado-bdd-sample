@@ -1,4 +1,4 @@
- check process python
+ check process tornado-8000
     with pidfile "/var/run/tornado-8000.lock"
     start program = "/home/ubuntu/tornado-bdd-sample/deploy/server start 8000"
     stop program = "/home/ubuntu/tornado-bdd-sample/deploy/server stop 8000"
