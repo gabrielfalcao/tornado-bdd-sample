@@ -1,0 +1,5 @@
+ check process python
+    with pidfile "/var/run/tornado-8000.lock"
+    start program = "/home/ubuntu/tornado-bdd-sample/deploy/server start 8000"
+    stop program = "/home/ubuntu/tornado-bdd-sample/deploy/server stop 8000"
+    if failed port 8000 protocol http then restart

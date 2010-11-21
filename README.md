@@ -76,17 +76,17 @@ this app was made to run on [Amazon EC2](http://aws.amazon.com/ec2/) with [monit
 
 you can set your monit to run the following script located at this project's root folder:
 
-    ./server start 8000
-    ./server start 8001
-    ./server start 8002
-    ./server start 8003
+    ./deploy/server start 8000
+    ./deploy/server start 8001
+    ./deploy/server start 8002
+    ./deploy/server start 8003
 
 and stop them with
 
-    ./server stop 8000
-    ./server stop 8001
-    ./server stop 8002
-    ./server stop 8003
+    ./deploy/server stop 8000
+    ./deploy/server stop 8001
+    ./deploy/server stop 8002
+    ./deploy/server stop 8003
 
 # license
 
