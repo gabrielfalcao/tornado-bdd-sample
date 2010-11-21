@@ -58,8 +58,10 @@ if __name__ == "__main__":
         pidfile_name = 'tornado-%d' % port
         pidfile = join(options.pidfile_path, pidfile_name)
         print "the pid file for this it at %s" % (pidfile)
+
         log_file = '%s.log' % join(options.working_directory, pidfile_name)
         print "logs at %s" % log_file
+
         log = open(log_file, 'a+')
         ctx = daemon.DaemonContext(
             stdout=log,
