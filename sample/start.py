@@ -24,9 +24,13 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 import sys
+import daemon
+import lockfile
 from optparse import OptionParser
 from os.path import dirname, abspath, join
-sys.path.append(join(abspath(dirname(__file__)), '..'))
+pwd = abspath(dirname(__file__))
+main_path = abspath(join(pwd, '..'))
+sys.path.append(main_path)
 
 import tornado.httpserver
 import tornado.ioloop
@@ -37,12 +41,33 @@ if __name__ == "__main__":
     parser.add_option("-p", "--port", dest="port",
                   help="the port to run server on", default='8000')
 
+    parser.add_option("-d", "--daemon", dest="daemon", action='store_true',
+                  help="run as daemon", default=False)
+
+    parser.add_option("-w", "--working-directory", dest="working_directory",
+                  help="the working directory to run in (works only with --daemon option)", default=main_path)
+
+    parser.add_option("-P", "--pidfile-directory", dest="pidfile_path",
+                  help="the pidfile directory to use (works only with --daemon option)", default=main_path)
+
     (options, args) = parser.parse_args()
-
-
     port = int(options.port)
-    print "Tornado listening at localhost:%d" % port
 
     http_server = tornado.httpserver.HTTPServer(application)
+    if options.daemon is True:
+        pidfile_name = 'tornado-%d' % port
+        pidfile = join(options.pidfile_path, pidfile_name)
+        print "the pid file for this it at %s" % (pidfile)
+
+        log = open('%s.log' % pidfile_name, 'a+')
+        ctx = daemon.DaemonContext(
+            stdout=log,
+            stderr=log,
+            working_directory=options.working_directory,
+            pidfile=lockfile.FileLock(pidfile, threaded=False)
+        )
+        ctx.open()
+
+    print "Tornado listening at localhost:%d" % port
     http_server.listen(port)
     tornado.ioloop.IOLoop.instance().start()

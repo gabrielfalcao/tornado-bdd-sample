@@ -11,6 +11,7 @@ a simple web application written with outside-in BDD technique through Lettuce +
 * [lettuce](http://github.com/gabrielfalcao/lettuce)
 * [tornado](http://tornadoweb.org/)
 * [fabric](http://fabfile.org/)
+* [daemon](http://pypi.python.org/pypi/python-daemon/)
 
 ## install them all in a single shot!
 
@@ -26,7 +27,48 @@ just go to the directory and run the command:
 
 just go to the directory and run the command:
 
-    python sample/__init__.py
+    python sample/server.py
+
+## run as daemon
+
+    python sample/server.py --daemon
+
+## run in different ports (specially for [deployment in production](http://www.tornadoweb.org/documentation#running-tornado-in-production))
+
+    python sample/server.py --port=8000
+
+### more on daemon mode
+
+all the parameters below are optional, if you don't set someone it
+will default to the application path
+
+#### setting the working directory
+
+    python sample/server.py --daemon --working-directory=/path/to/working/dir/
+
+
+
+#### setting the pidfile directory
+
+    python sample/server.py --daemon --pidfile-directory=/var/run/ --port=8899
+
+this will make the server run on `/var/run/tornado-8899.lock`
+
+## putting all together
+
+this will run your application as daemon in ports 8000 to 8003 working on `/srv/apps/tornado-app`:
+
+    python sample/server.py --port=8000 --daemon --pidfile-directory=/var/run/ --working-directory=/srv/apps/tornado-app
+    python sample/server.py --port=8001 --daemon --pidfile-directory=/var/run/ --working-directory=/srv/apps/tornado-app
+    python sample/server.py --port=8002 --daemon --pidfile-directory=/var/run/ --working-directory=/srv/apps/tornado-app
+    python sample/server.py --port=8003 --daemon --pidfile-directory=/var/run/ --working-directory=/srv/apps/tornado-app
+
+and the pidfiles will be located at:
+
+`/var/run/tornado-8000.lock`
+`/var/run/tornado-8001.lock`
+`/var/run/tornado-8002.lock`
+`/var/run/tornado-8003.lock`
 
 # license
 
