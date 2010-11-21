@@ -1,11 +1,15 @@
 #!/bin/bash
 
+START_SCRIPT_PATH=/home/ubuntu/tornado-bdd-sample/sample/start.py
+PIDFILE_DIRECTORY=/var/run/
+WORKING_DIRECTORY=/srv/apps/tornado-app/
+
 case "$2" in
     8000|8001|8002|8003)
 
         case "$1" in
             start)
-                /usr/bin/env python `pwd`/sample/start.py --port=$2 --daemon --pidfile-directory=/var/run/ --working-directory=/srv/apps/tornado-app/
+                /usr/bin/env python $START_SCRIPT_PATH --port=$2 --daemon --pidfile-directory=$PIDFILE_DIRECTORY --working-directory=$WORKING_DIRECTORY
                 ;;
             stop)
                 ps aux | egrep 'start[.]py' | egrep $2 | awk '{ print $2 }' | xargs kill -9;
